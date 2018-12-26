@@ -39,7 +39,7 @@ myElf::myElf(const char *fileName) {
 
         // std::cout << ".text_offset:" << this->textOffset << ", .text_size:" << this->textSize << std::endl;
         // for(int i=0; i<s.size(); i++) std::cout << std::hex << std::setfill('0') << std::setw(2) << +this->head[i] << " ";
-        dumpTextSection();
+        textDisasm();
     }
 }
 
@@ -59,26 +59,12 @@ bool myElf::isElf() {
     return false;
 }
 
-const char *sectionType2str(int sectionType) {
-    switch(sectionType) {
-    case SHT_NULL:      return "NULL";
-    case SHT_PROGBITS:  return "PROGBITS";
-    case SHT_SYMTAB:    return "SYMTAB";
-    case SHT_STRTAB:    return "STRTAB";
-    case SHT_RELA:      return "RELA";
-    case SHT_HASH:      return "HASH";
-    case SHT_DYNAMIC:   return "DYNAMIC";
-    case SHT_NOTE:      return "NOTE";
-    case SHT_NOBITS:    return "NOBITS";
-    case SHT_REL:       return "REL";
-    case SHT_SHLIB:     return "SHLIB";
-    case SHT_DYNSYM:    return "DYNSYM";
-    case SHT_INIT_ARRAY:return "INIT_ARRAY";
-    case SHT_FINI_ARRAY:return "FINI_ARRAY";
-    case SHT_GNU_HASH:  return "GNU_HASH";
-    case SHT_GNU_verdef:return "GNU_VERDEF";
-    case SHT_GNU_verneed:return "GNU_VERNEED";
-    case SHT_GNU_versym:return "GNU_VERSYM";
-    default:            return "Unknown...";
+void myElf::textDisasm() {
+    disasm(this->textOffset, this->textOffset + this->textSize - 1);
+}
+
+void myElf::disasm(int begin, int end) {
+    for(int i = begin; i <= end; i++) {
+        std::cout << opcodes[(int)this->head[i]] << std::endl;
     }
 }

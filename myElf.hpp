@@ -3,6 +3,10 @@
 #include <elf.h>
 #include <iomanip>
 #include <cstring>
+#include <vector>
+#include <string>
+
+extern std::string opcodes[];
 
 class myElf {
 private:
@@ -19,13 +23,15 @@ private:
         return (Elf32_Shdr *)((char *)this->shdr + this->ehdr->e_shentsize * this->ehdr->e_shstrndx);
     }
 
+    void dumpTextSection();
+
+    void disasm(int begin, int end);
+
 public:
     myElf(const char *fileName);
     ~myElf();
 
-    void dumpTextSection();
+    void textDisasm();
 
     bool isElf();
 };
-
-const char *sectionType2str(int sectionType);
